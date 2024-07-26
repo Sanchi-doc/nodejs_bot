@@ -13,7 +13,7 @@ bot.start((ctx) => {
     return;
   }
 
-  const loginUrl = `${webAppUrl}/login?userId=${userId}`; // Generate the login URL with userId parameter
+  const loginUrl = `${webAppUrl}`; // Generate the login URL with userId parameter
 
   const inlineKeyboard = {
     inline_keyboard: [[
