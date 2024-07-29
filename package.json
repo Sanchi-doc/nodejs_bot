@@ -2,10 +2,10 @@
   "name": "telegram-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "bot.js",
+  "main": "utils/bot.js",
   "scripts": {
-    "start": "node bot.js",
-    "server": "node server/index.js"
+    "start": "node app.js",
+    "server": "node app.js"
   },
   "dependencies": {
     "dotenv": "^10.0.0",

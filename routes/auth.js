@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { findUserByTelegramId } = require('../memoryDb');
+const { findUserByTelegramId, createUserWithTelegramId } = require('../utils/memoryDb');
 
-router.get('/', (req, res) => {
+router.get('/login', (req, res) => {
   const userId = req.query.userId;
 
   if (!userId) {
@@ -12,9 +12,10 @@ router.get('/', (req, res) => {
   const user = findUserByTelegramId(userId);
 
   if (user) {
-    res.send(`User data: ${JSON.stringify(user)}`);
+    res.send(`Welcome, ${user.name}`);
   } else {
-    res.status(404).send('User not found');
+    const newUser = createUserWithTelegramId(userId);
+    res.send(`Registration successful! Welcome, ${newUser.name}`);
   }
 });
 

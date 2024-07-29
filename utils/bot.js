@@ -24,4 +24,9 @@ bot.start((ctx) => {
   ctx.reply('Welcome! Please log in to the website using the button below:', { reply_markup: inlineKeyboard });
 });
 
-bot.launch();
+
+// Enable graceful stop
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
+module.exports = { bot };
