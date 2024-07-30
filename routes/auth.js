@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { findUserByTelegramId, createUserWithTelegramId } = require('../memoryDb');
+const { findUserByTelegramId, createUserWithTelegramId } = require('../utils/memoryDb');
 
 router.get('/login', (req, res) => {
   const userId = req.query.userId;
