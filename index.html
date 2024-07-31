@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web App</title>
+</head>
+<body>
+    <h1>Welcome to Telegram Web App</h1>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        Telegram.WebApp.ready();
+        const user = Telegram.WebApp.initDataUnsafe?.user;
+
+        if (user) {
+            document.body.innerHTML += `<p>Hello, ${user.first_name} ${user.last_name}</p>`;
+        } else {
+            document.body.innerHTML += `<p>Unable to get user data.</p>`;
+        }
+
+        // Example of sending data back to the bot
+        function sendData() {
+            Telegram.WebApp.sendData(JSON.stringify({action: 'some_action'}));
+        }
+
+        // Button to send data back to the bot
+        document.body.innerHTML += `<button onclick="sendData()">Send Data to Bot</button>`;
+    </script>
+</body>
+</html>
