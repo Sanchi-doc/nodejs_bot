@@ -23,6 +23,7 @@ bot.start((ctx) => {
 
 // Обработка данных, отправленных из веб-приложения
 bot.on('message', (ctx) => {
+  console.log('Data received from web app:', ctx);
   if (ctx.message && ctx.message.web_app_data) {
     const data = JSON.parse(ctx.message.web_app_data.data);
     console.log('Data received from web app:', data);
