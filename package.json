@@ -2,7 +2,7 @@
   "name": "telegram-web-app",
   "version": "1.0.0",
   "description": "",
-  "main": "server/index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
