@@ -6,6 +6,8 @@ const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 bot.start((ctx) => {
   const webAppUrl = process.env.WEB_APP_URL;
 
+  console.log('Data received when start', JSON.stringify(ctx.message));
+
   if (!webAppUrl) {
     console.error("WEB_APP_URL is not defined in the .env file");
     ctx.reply("Configuration error: WEB_APP_URL is not defined.");
@@ -23,7 +25,7 @@ bot.start((ctx) => {
 
 // Обработка данных, отправленных из веб-приложения
 bot.on('message', (ctx) => {
-  console.log('Data received from web app:', ctx);
+  console.log('Data received from web app:', JSON.stringify(ctx.message));
   if (ctx.message && ctx.message.web_app_data) {
     const data = JSON.parse(ctx.message.web_app_data.data);
     console.log('Data received from web app:', data);
