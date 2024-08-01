@@ -3,10 +3,12 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const healthRoutes = require('./routes/health'); 
 const { bot } = require('./utils/bot');
+const morgan = require('morgan');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(morgan('tiny'));
 app.use(express.json());
 
 // Use routes
