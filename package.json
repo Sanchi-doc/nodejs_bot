@@ -7,11 +7,10 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "@nuxtjs/auth-next": "^5.0.0-1667386184.dfbbb54",
-    "@nuxtjs/axios": "^5.13.6",
     "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "telegraf": "^4.0.0"
