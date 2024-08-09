@@ -1,40 +1,38 @@
 require('dotenv').config();
 const { Telegraf } = require('telegraf');
+const jwt = require('jsonwebtoken');
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
 bot.start((ctx) => {
-  const webAppUrl = process.env.WEB_APP_URL;
+  const user = ctx.message.from;
 
-  console.log('Data received when start', JSON.stringify(ctx.message));
+  const payload = {
+    id: user.id,
+    first_name: user.first_name,
+    username: user.username,
+    language_code: user.language_code
+  };
 
-  if (!webAppUrl) {
-    console.error("WEB_APP_URL is not defined in the .env file");
-    ctx.reply("Configuration error: WEB_APP_URL is not defined.");
-    return;
-  }
+  const token = jwt.sign(payload, process.env.SESSION_SECRET, { expiresIn: '1h' });
+
+  // Output token to console
+  console.log(`Generated token for user ${user.username}: ${token}`);
+
+  const webAppUrl = `${process.env.WEB_APP_URL}?token=${token}`;
 
   const inlineKeyboard = {
     inline_keyboard: [[
-      { text: 'Log in to the website', web_app: { url: webAppUrl } }
+      { text: 'Open Web App', web_app: { url: webAppUrl } }
     ]]
   };
 
+  // We send only the button without the token
   ctx.reply('Welcome! Please log in to the website using the button below:', { reply_markup: inlineKeyboard });
 });
 
-// Обработка данных, отправленных из веб-приложения
-bot.on('message', (ctx) => {
-  console.log('Data received from web app:', JSON.stringify(ctx.message));
-  if (ctx.message && ctx.message.web_app_data) {
-    const data = JSON.parse(ctx.message.web_app_data.data);
-    console.log('Data received from web app:', data);
-    ctx.reply(`Data received: ${JSON.stringify(data)}`);
-  }
-});
-
-// Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
+bot.launch()
+  .then(() => console.log('Bot started'))
+  .catch(error => console.error('Error starting bot:', error));
 
 module.exports = { bot };

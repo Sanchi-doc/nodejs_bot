@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Telegram Web App</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script>
+    window.Telegram.WebApp.ready();
+    
+    // Обработчик клика на кнопку
+    function handleClick() {
+      // Получаем токен из localStorage или другого хранилища
+      const token = localStorage.getItem('token');
+      if (token) {
+        // Отправляем токен на ваш сервер
+        fetch('https://your-server-url.com/verify-token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ token })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Выполните действие после успешной авторизации
+            alert('Successfully logged in');
+          } else {
+            alert('Failed to log in');
+          }
+        });
+      } else {
+        alert('No token found');
+      }
+    }
+  </script>
+</head>
+<body>
+  <button onclick="handleClick()">Log in</button>
+</body>
+</html>
