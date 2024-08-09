@@ -1,29 +1,20 @@
-require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
-const helmet = require('helmet');
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
+const healthRoutes = require('./routes/health');
 const { bot } = require('./utils/bot');
+const morgan = require('morgan');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(morgan('tiny'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(helmet());
-
-// Serve static files
-app.use(express.static('views'));
+app.use(express.json());
 
 // Use routes
-app.use('/api/auth', authRoutes);
-
-// Serve the main HTML file for the root route
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/views/app.html');
-});
+app.use('/auth/api', authRoutes);
+app.use('/user/api', userRoutes);
+app.use('/health', healthRoutes);
 
 bot.launch()
   .then(() => {
