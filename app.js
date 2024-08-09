@@ -12,8 +12,8 @@ app.use(morgan('tiny'));
 app.use(express.json());
 
 // Use routes
-app.use('/auth/api', authRoutes);
-app.use('/user/api', userRoutes);
+app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
 app.use('/health', healthRoutes);
 
 bot.launch()
