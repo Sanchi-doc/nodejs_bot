@@ -34,7 +34,7 @@ router.post('/login', async (req, res) => {
   }
 
   const token = jwt.sign({ id: user.id, email: user.email, username: user.username }, 'your-secret-key', { expiresIn: '1h' });
-  res.json({ token, user: { id: user.id, email: user.email, username: user.username } });
+  res.json({ token, user: { id: user.id, email: user.email, username: user.username } }); // Тут є смисл віддавати юзера в респонсі?
 });
 
 // Выход пользователя
