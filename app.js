@@ -1,6 +1,5 @@
 const express = require('express');
 const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/user');
 const healthRoutes = require('./routes/health');
 const { bot } = require('./utils/bot');
 const morgan = require('morgan');
@@ -15,7 +14,6 @@ app.use(bodyParser.json())
 
 // Use routes
 app.use('/auth', authRoutes);
-app.use('/user', userRoutes);
 app.use('/health', healthRoutes);
 
 bot.launch()
