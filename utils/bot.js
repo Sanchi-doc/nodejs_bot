@@ -7,19 +7,10 @@ const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 bot.start((ctx) => {
   const user = ctx.message.from;
 
-  const payload = {
-    id: user.id,
-    first_name: user.first_name,
-    username: user.username,
-    language_code: user.language_code
-  };
-
-  const token = jwt.sign(payload, process.env.SESSION_SECRET, { expiresIn: '1h' });
-
   // Output token to console
-  console.log(`Generated token for user ${user.username}: ${token}`);
+  console.log(`Generated token for user ${user}`);
 
-  const webAppUrl = `${process.env.WEB_APP_URL}?token=${token}`;
+  const webAppUrl = `${process.env.WEB_APP_URL}?token=`;
 
   const inlineKeyboard = {
     inline_keyboard: [[
