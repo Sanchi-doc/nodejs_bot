@@ -26,6 +26,11 @@ bot.launch()
     console.log('Error starting bot:', error);
   });
 
+// Enable graceful stop
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
