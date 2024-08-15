@@ -8,7 +8,7 @@ bot.start((ctx) => {
   const user = ctx.message.from;
 
   // Output token to console
-  console.log(`Generated token for user ${user}`);
+  console.log(`Generated token for user ${JSON.stringify(user)}`);
 
   const webAppUrl = `${process.env.WEB_APP_URL}?token=`;
 
