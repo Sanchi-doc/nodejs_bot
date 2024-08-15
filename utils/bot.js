@@ -7,10 +7,19 @@ const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 bot.start((ctx) => {
   const user = ctx.message.from;
 
-  // Output token to console
-  console.log(`Generated token for user ${JSON.stringify(user)}`);
+  const payload = {
+    id: user.id,
+    first_name: user.first_name,
+    username: user.username,
+    language_code: user.language_code
+  };
 
-  const webAppUrl = `${process.env.WEB_APP_URL}?token=`;
+  const token = jwt.sign(payload, process.env.SESSION_SECRET, { expiresIn: '1h' });
+
+  // Генерация URL с токеном и дополнительными параметрами
+  const webAppUrl = `${process.env.WEB_APP_URL}/tg?token=${encodeURIComponent(token)}&id=${user.id}&username=${encodeURIComponent(user.username)}`;
+
+  console.log(`Generated URL for user: ${webAppUrl}`);
 
   const inlineKeyboard = {
     inline_keyboard: [[
@@ -18,12 +27,12 @@ bot.start((ctx) => {
     ]]
   };
 
-  // We send only the button without the token
+  // Отправка кнопки пользователю
   ctx.reply('Welcome! Please log in to the website using the button below:', { reply_markup: inlineKeyboard });
 });
 
-bot.launch()
-  .then(() => console.log('Bot started'))
-  .catch(error => console.error('Error starting bot:', error));
+// bot.launch()
+//   .then(() => console.log('Bot started'))
+//   .catch(error => console.error('Error starting bot:', error));
 
 module.exports = { bot };
