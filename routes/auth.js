@@ -15,7 +15,7 @@ router.post('/login', async (req, res) => {
   }
 
   const token = jwt.sign({id: user.id, email: user.email}, 'your-secret-key', {expiresIn: '1h'})
-  res.json({token, user: {id: user.id, email: user.email}})
+  res.json({token})
 });
 
 router.post('/logout', (req, res) => {
