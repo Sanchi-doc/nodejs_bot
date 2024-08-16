@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const users = []
 
 router.post('/login', async (req, res) => {
-  console.log('login', users)
+  console.log('login', req.body,users)
   const {email, password} = req.body
   const user = users.find(user => user.email === email)
 
@@ -24,6 +24,7 @@ router.post('/logout', (req, res) => {
 })
 
 router.post('/register', async (req, res) => {
+  console.log('register', req.body, users)
   const { email, password } = req.body
 
   if (users.find(user => user.email === email)) {
