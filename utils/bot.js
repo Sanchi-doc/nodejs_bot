@@ -14,10 +14,10 @@ bot.start((ctx) => {
     language_code: user.language_code
   };
 
-  const token = jwt.sign(payload, process.env.SESSION_SECRET, { expiresIn: '1h' });
+  
 
   // Генерация URL с токеном и дополнительными параметрами
-  const webAppUrl = `${process.env.WEB_APP_URL}/tg?token=${encodeURIComponent(token)}&id=${user.id}&username=${encodeURIComponent(user.username)}`;
+  const webAppUrl = `${process.env.WEB_APP_URL}/tg?id=${user.id}&username=${encodeURIComponent(user.username)}`;
 
   console.log(`Generated URL for user: ${webAppUrl}`);
 
