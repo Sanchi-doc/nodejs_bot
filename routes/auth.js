@@ -43,7 +43,7 @@ router.post('/register', async (req, res) => {
     users.push(user);
   }  else {
     console.log(`No ID provided`);
-    console.log(`tgId user:${tgId}`)
+    console.log(`tgId: ${tgId}`)
 
     if (users.find(user => user.email === email)) {
       return res.status(400).json({ message: 'User already exists' })
