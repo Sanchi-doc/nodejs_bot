@@ -7,20 +7,34 @@ const users = [];
 
 
 const generatePassword = (username, id) => {
-  return `${username}-${id}-password`; 
+  return `${username}-${id}-password`
 };
 
 router.post('/login', async (req, res) => {
   console.log('login', req.body, users);
-  const { email, password } = req.body;
-  const user = users.find(user => user.email === email);
+  const { email, password, tgId } = req.body;
+  
+  if (tgId) {
+    const user = users.find(user => user?.tgId === tgId);
+    
+    const tgPassword = generatePassword(user.username, user.tgId);
+    
+    if (!user || !(await bcrypt.compare(tgPassword, user.password))) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
 
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(400).json({ message: 'Invalid credentials' });
+    const token = jwt.sign({ id: user.id, username: user.username }, 'your-secret-key', { expiresIn: '1h' });
+    res.json({ token, user: { id: user.id, username: user.username } });
+  } else {
+    const user = users.find(user => user.email === email);
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign({ id: user.id, username: user.username }, 'your-secret-key', { expiresIn: '1h' });
+    res.json({ token, user: { id: user.id, username: user.username } });
   }
-
-  const token = jwt.sign({ id: user.id, username: user.username }, 'your-secret-key', { expiresIn: '1h' });
-  res.json({ token, user: { id: user.id, username: user.username } });
 });
 
 router.post('/logout', (req, res) => {
@@ -30,16 +44,17 @@ router.post('/logout', (req, res) => {
 router.post('/register', async (req, res) => {
   console.log(`Received body: ${JSON.stringify(req.body)}`);
   const { tgId, username, password, email } = req.body;
+  let user;
 
   if (tgId) {
-    if (users.find(user => user.tgId === tgId)) {
-      return res.status(400).json({ message: 'User with this ID already exists' });
+    if (users.find(user => user?.tgId === tgId)) {
+      return res.status(200).json({ message: 'User with this ID already exists' });
     }
 
-    const generatedPassword = generatePassword(username, id);
+    const generatedPassword = generatePassword(username, tgId);
     const hashedPassword = await bcrypt.hash(generatedPassword, 10);
 
-    const user = { id: users.length + 1, username, password: hashedPassword };
+    const user = { id: users.length + 1, username, tgId, password: hashedPassword };
     users.push(user);
   }  else {
     console.log(`No ID provided`);
@@ -50,13 +65,13 @@ router.post('/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
-    const user = { id: users.length + 1, email, password: hashedPassword }
+    user = { id: users.length + 1, email, password: hashedPassword }
     users.push(user)
   }
   
   console.log("Registered users", users);
 
-  res.status(201).json({ message: 'User created successfully', user: { id, username } });
+  res.status(201).json({ message: 'User created successfully'});
 });
 
 
