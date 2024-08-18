@@ -11,7 +11,7 @@ const generatePassword = (username, id) => {
 };
 
 router.post('/login', async (req, res) => {
-  console.log('Login request:', req.body);  
+  console.log('login', req.body, users);
   const { email, password } = req.body;
   const user = users.find(user => user.email === email);
 
@@ -28,24 +28,22 @@ router.post('/logout', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-  console.log(`Received registration body: ${JSON.stringify(req.body)}`);
-
+  console.log(`Received body: ${JSON.stringify(req.body)}`);
   const { tgId, username, password, email } = req.body;
-  console.log(`User with tgID: ${tgId}`);
+
   if (tgId) {
     if (users.find(user => user.tgId === tgId)) {
       return res.status(400).json({ message: 'User with this ID already exists' });
     }
-    
 
-    const generatedPassword = generatePassword(username, users.length + 1);
+    const generatedPassword = generatePassword(username, id);
     const hashedPassword = await bcrypt.hash(generatedPassword, 10);
 
     const user = { id: users.length + 1, username, password: hashedPassword };
     users.push(user);
   }  else {
-    console.log(`No tgID provided. Registering with email: ${email}`);
-    
+    console.log(`No ID provided`);
+    console.log(`tgId user:${tgId}`)
 
     if (users.find(user => user.email === email)) {
       return res.status(400).json({ message: 'User already exists' })
@@ -56,9 +54,9 @@ router.post('/register', async (req, res) => {
     users.push(user)
   }
   
-  console.log("**Registered users:**", users);
+  console.log("Registered users", users);
 
-  res.status(201).json({ message: 'User created successfully', user: { id: user.id, username: username } });
+  res.status(201).json({ message: 'User created successfully', user: { id, username } });
 });
 
 
