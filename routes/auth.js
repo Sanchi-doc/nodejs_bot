@@ -7,7 +7,6 @@ const users = [];
 
 
 const generatePassword = (username, id) => {
- 
   return `${username}-${id}-password`; 
 };
 
@@ -30,28 +29,30 @@ router.post('/logout', (req, res) => {
 
 router.post('/register', async (req, res) => {
   console.log(`Received body: ${JSON.stringify(req.body)}`);
-  const { id, username } = req.body;
+  const { tgId, username, password, email } = req.body;
 
-  if (id) {
-    if (users.find(user => user.id === id)) {
-      console.log(`User with ID ${id} already exists`);
+  if (tgId) {
+    if (users.find(user => user.tgId === tgId)) {
       return res.status(400).json({ message: 'User with this ID already exists' });
     }
+
+    const generatedPassword = generatePassword(username, id);
+    const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+
+    const user = { id: users.length + 1, username, password: hashedPassword };
+    users.push(user);
   }  else {
-    console.log(`No ID provided, auto-generating ID: ${id}`);
+    console.log(`No ID provided`);
+
+    if (users.find(user => user.email === email)) {
+      return res.status(400).json({ message: 'User already exists' })
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const user = { id: users.length + 1, email, password: hashedPassword }
+    users.push(user)
   }
-
-  if (users.find(user => user.username === username)) {
-    console.log("User already exists", users);
-    return res.status(400).json({ message: 'User already exists' });
-  }
-
-  const generatedPassword = generatePassword(username, id);
-  const hashedPassword = await bcrypt.hash(generatedPassword, 10);
-
-  const user = { id, username, password: hashedPassword };
-  users.push(user);
-
+  
   console.log("Registered users", users);
 
   res.status(201).json({ message: 'User created successfully', user: { id, username } });
