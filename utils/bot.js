@@ -6,16 +6,9 @@ const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
 bot.start((ctx) => {
   const user = ctx.message.from;
-
-  const payload = {
-    tgId: user.id, 
-    first_name: user.first_name,
-    username: user.username,
-    language_code: user.language_code
-  };
-
+  
   // Генерация URL с токеном и дополнительными параметрами
-  const webAppUrl = `${process.env.WEB_APP_URL}/tg?tgId=${user.id}&username=${encodeURIComponent(user.username)}`;
+  const webAppUrl = `${process.env.WEB_APP_URL}tg?tgId=${user.id}&username=${encodeURIComponent(user.username)}`;
 
   console.log(`Generated URL for user: ${webAppUrl}`);
 
