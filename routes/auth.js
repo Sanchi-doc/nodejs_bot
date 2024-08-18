@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken');
-const { message } = require("telegraf/filters");
+const jwt = require('jsonwebtoken')
 
 const users = []
 
 router.post('/login', async (req, res) => {
-  console.log('login', users)
+  console.log('login', req.body,users)
   const {email, password} = req.body
   const user = users.find(user => user.email === email)
 
@@ -25,8 +24,8 @@ router.post('/logout', (req, res) => {
 })
 
 router.post('/register', async (req, res) => {
-  const { id, username } = req.body
-  console.log('Received data:', { id, username });
+  console.log(`Received body: ${JSON.stringify(req.body)}`)
+  const {id, username, password } = req.body
 
   if (users.find(user => user.username === username)) {
     console.log("alredy users", users)
@@ -41,13 +40,12 @@ router.post('/register', async (req, res) => {
 
   res.status(201).json({ message: 'User created successfully' })
 
-
   if (users.find(user => user.id === id)) {
     console.log(`User with ID ${id} already exists`);
     return res.status(400).json({ message: 'User with this ID already exists' });
   }
-    
 
+ 
 });
 
 router.get('/session', (req, res) => {
