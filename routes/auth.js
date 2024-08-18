@@ -7,12 +7,11 @@ const users = [];
 
 
 const generatePassword = (username, id) => {
- 
   return `${username}-${id}-password`; 
 };
 
 router.post('/login', async (req, res) => {
-  console.log('login', req.body, users);
+  console.log('Login request:', req.body);  
   const { email, password } = req.body;
   const user = users.find(user => user.email === email);
 
@@ -29,32 +28,37 @@ router.post('/logout', (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-  console.log(`Received body: ${JSON.stringify(req.body)}`);
-  const { id, username } = req.body;
+  console.log(`Received registration body: ${JSON.stringify(req.body)}`);
 
-  if (id) {
-    if (users.find(user => user.id === id)) {
-      console.log(`User with ID ${id} already exists`);
+  const { tgId, username, password, email } = req.body;
+  console.log(`User with tgID: ${tgId}`);
+  if (tgId) {
+    if (users.find(user => user.tgId === tgId)) {
       return res.status(400).json({ message: 'User with this ID already exists' });
     }
+    
+
+    const generatedPassword = generatePassword(username, users.length + 1);
+    const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+
+    const user = { id: users.length + 1, username, password: hashedPassword };
+    users.push(user);
   }  else {
-    console.log(`No ID provided, auto-generating ID: ${id}`);
+    console.log(`No tgID provided. Registering with email: ${email}`);
+    
+
+    if (users.find(user => user.email === email)) {
+      return res.status(400).json({ message: 'User already exists' })
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+    const user = { id: users.length + 1, email, password: hashedPassword }
+    users.push(user)
   }
+  
+  console.log("**Registered users:**", users);
 
-  if (users.find(user => user.username === username)) {
-    console.log("User already exists", users);
-    return res.status(400).json({ message: 'User already exists' });
-  }
-
-  const generatedPassword = generatePassword(username, id);
-  const hashedPassword = await bcrypt.hash(generatedPassword, 10);
-
-  const user = { id, username, password: hashedPassword };
-  users.push(user);
-
-  console.log("Registered users", users);
-
-  res.status(201).json({ message: 'User created successfully', user: { id, username } });
+  res.status(201).json({ message: 'User created successfully', user: { id: user.id, username: username } });
 });
 
 
