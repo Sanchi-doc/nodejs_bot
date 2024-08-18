@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 
 const users = [];
 
-
 const generatePassword = (username, id) => {
   return `${username}-${id}-password`
 };
