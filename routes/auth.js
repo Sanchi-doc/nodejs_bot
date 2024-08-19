@@ -23,7 +23,7 @@ router.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign({ id: user.id, username: user.username }, 'your-secret-key', { expiresIn: '1h' });
-    res.json({ token, user: { id: user.id, username: user.username } });
+    res.json({token});
   } else {
     const user = users.find(user => user.email === email);
 
@@ -32,7 +32,7 @@ router.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign({ id: user.id, username: user.username }, 'your-secret-key', { expiresIn: '1h' });
-    res.json({ token, user: { id: user.id, username: user.username } });
+    res.json({token});
   }
 });
 
