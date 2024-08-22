@@ -9,12 +9,13 @@ const bodyParser = require('body-parser')
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(morgan('tiny'));
 app.use(bodyParser.json())
 
 // Use routes
 app.use('/auth', authRoutes);
-app.use('/health', healthRoutes);
+app.use('health', healthRoutes);
 
 bot.launch()
   .then(() => {
