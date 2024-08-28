@@ -82,6 +82,7 @@ router.get('/session', (req, res) => {
 
   try {
     const decoded = jwt.verify(token, 'your-secret-key');
+    console.log('decoded', decoded);
     res.json({ user: { id: decoded.id, email: decoded.email, username: decoded.username, tgId: decoded.tgId } });
   } catch (error) {
     res.status(401).json({ message: 'Invalid token' });
