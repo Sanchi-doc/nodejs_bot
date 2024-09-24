@@ -25,7 +25,7 @@ const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 // });
 
 bot.start(async (ctx) => {
-  try {
+  //try {
     // Step 1: Send the image
     await ctx.replyWithPhoto(
       { url: 'https://emp.betinvest.xyz/staticcdn/static/img/tournaments/870x400.png' },  // Replace with your actual image URL or file_id
