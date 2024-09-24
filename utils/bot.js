@@ -25,7 +25,7 @@ const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 // });
 
 bot.start(async (ctx) => {
-  //try {
+  try {
      console.log('Received ctx:', ctx.message);
     // Step 1: Send the image
     ctx.replyWithPhoto(
