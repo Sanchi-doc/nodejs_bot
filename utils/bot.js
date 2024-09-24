@@ -29,7 +29,7 @@ bot.start(async (ctx) => {
      console.log('Received ctx:', ctx.message);
     // Step 1: Send the image
     ctx.replyWithPhoto(
-      { url: 'https://emp.betinvest.xyz/staticcdn/static/img/tournaments/870x400.png' },  // Replace with your actual image URL or file_id
+      { url: 'https://staticcdn.lope.bet/static/img/banners/uploads/Fly-and-play_-win-today-Casino-WEB-561x339-EN_11zon.webp' },  // Replace with your actual image URL or file_id
       { caption: 'Please share your phone number by pressing the button below.' }
     );
 
