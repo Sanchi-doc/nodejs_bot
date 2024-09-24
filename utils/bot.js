@@ -28,29 +28,29 @@ bot.start(async (ctx) => {
   //try {
      console.log('Received ctx:', ctx.message);
     // Step 1: Send the image
-    await ctx.replyWithPhoto(
+    ctx.replyWithPhoto(
       { url: 'https://emp.betinvest.xyz/staticcdn/static/img/tournaments/870x400.png' },  // Replace with your actual image URL or file_id
       { caption: 'Please share your phone number by pressing the button below.' }
     );
 
-    // Step 2: Send the contact request keyboard
-  //   await ctx.reply('Share your phone number:', {
-  //     reply_markup: {
-  //       keyboard: [
-  //         [
-  //           {
-  //             text: 'Share phone number',
-  //             request_contact: true, // This will request the user's phone number
-  //           }
-  //         ]
-  //       ],
-  //       resize_keyboard: true, // Adjust the keyboard size to fit the button
-  //       one_time_keyboard: true, // Hide the keyboard after the user presses the button
-  //     },
-  //   });
-  // } catch (error) {
-  //   console.error('Error sending image or requesting contact:', error);
-  // }
+    //Step 2: Send the contact request keyboard
+    ctx.reply('Share your phone number:', {
+      reply_markup: {
+        keyboard: [
+          [
+            {
+              text: 'Share phone number',
+              request_contact: true, // This will request the user's phone number
+            }
+          ]
+        ],
+        resize_keyboard: true, // Adjust the keyboard size to fit the button
+        one_time_keyboard: true, // Hide the keyboard after the user presses the button
+      },
+    });
+  } catch (error) {
+    console.error('Error sending image or requesting contact:', error);
+  }
 });
 
 bot.on('contact', (ctx) => {
