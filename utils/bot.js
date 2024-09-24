@@ -24,28 +24,32 @@ const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 //   ctx.reply('Welcome! Please log in to the website using the button below:', { reply_markup: inlineKeyboard });
 // });
 
-bot.start((ctx) => {
-  // Step 1: Send an image
-  ctx.replyWithPhoto({ url: 'https://emp.betinvest.xyz/staticcdn/static/img/tournaments/870x400.png' }, {
-    caption: 'Please share your phone number'
-  })
-    .then(() => {
-      // Step 2: Send a keyboard with a button to request contact
-      ctx.reply('Share your phone number by pressing the button below.', {
-        reply_markup: {
-          keyboard: [
-            [
-              {
-                text: 'Share phone number',
-                request_contact: true, // This will request the user's phone number
-              }
-            ]
-          ],
-          resize_keyboard: true,
-          one_time_keyboard: true,
-        },
-      });
+bot.start(async (ctx) => {
+  try {
+    // Step 1: Send the image
+    await ctx.replyWithPhoto(
+      { url: 'https://example.com/your-image.jpg' },  // Replace with your actual image URL or file_id
+      { caption: 'Please share your phone number by pressing the button below.' }
+    );
+
+    // Step 2: Send the contact request keyboard
+    await ctx.reply('Share your phone number:', {
+      reply_markup: {
+        keyboard: [
+          [
+            {
+              text: 'Share phone number',
+              request_contact: true, // This will request the user's phone number
+            }
+          ]
+        ],
+        resize_keyboard: true, // Adjust the keyboard size to fit the button
+        one_time_keyboard: true, // Hide the keyboard after the user presses the button
+      },
     });
+  } catch (error) {
+    console.error('Error sending image or requesting contact:', error);
+  }
 });
 
 bot.on('contact', (ctx) => {
