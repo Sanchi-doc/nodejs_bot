@@ -57,6 +57,7 @@ bot.on('contact', (ctx) => {
   console.log("bot on contact", ctx.message)
   const phoneNumber = ctx.message.contact.phone_number;
   ctx.reply(`Thank you! Your phone number is: ${phoneNumber}`);
+  ctx.reply('Welcome! Please log in to the website using the button below:', { reply_markup: inlineKeyboard });
 });
 
 // bot.launch()
