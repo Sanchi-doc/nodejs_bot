@@ -56,6 +56,14 @@ bot.start(async (ctx) => {
 bot.on('contact', (ctx) => {
   console.log("bot on contact", ctx.message)
   const phoneNumber = ctx.message.contact.phone_number;
+  
+  
+  const inlineKeyboard = {
+    inline_keyboard: [[
+      { text: 'Open Web App', web_app: { url: webAppUrl } }
+    ]]
+  };
+  
   ctx.reply(`Thank you! Your phone number is: ${phoneNumber}`);
   ctx.reply('Welcome! Please log in to the website using the button below:', { reply_markup: inlineKeyboard });
 });
