@@ -63,6 +63,10 @@ bot.on('contact', (ctx) => {
       { text: 'Open Web App', web_app: { url: webAppUrl } }
     ]]
   };
+
+  const user = ctx.message.from;
+
+  const webAppUrl = `${process.env.WEB_APP_URL}tg?tgId=${user.id}&username=${encodeURIComponent(user.username)}`;
   
   ctx.reply(`Thank you! Your phone number is: ${phoneNumber}`);
   ctx.reply('Welcome! Please log in to the website using the button below:', { reply_markup: inlineKeyboard });
