@@ -1,0 +1,46 @@
+alerts:
+- rule: DEPLOYMENT_FAILED
+- rule: DOMAIN_FAILED
+envs:
+- key: TELEGRAM_BOT_TOKEN
+  scope: RUN_AND_BUILD_TIME
+  value: 7248436304:AAEqEa7L3asnUmNFagTMyFAhvvHGHf1PWzU
+- key: WEB_APP_URL
+  scope: RUN_AND_BUILD_TIME
+  value: https://monkfish-app-el9x9.ondigitalocean.app/
+- key: PORT
+  scope: RUN_AND_BUILD_TIME
+  value: "3000"
+features:
+- buildpack-stack=ubuntu-22
+ingress:
+  rules:
+  - component:
+      name: nodejs-bot
+    match:
+      path:
+        prefix: /
+name: nodebot
+region: fra
+services:
+- build_command: |2+
+
+  environment_slug: node-js
+  envs:
+  - key: TELEGRAM_BOT_TOKEN
+    scope: RUN_AND_BUILD_TIME
+    value: 7248436304:AAEqEa7L3asnUmNFagTMyFAhvvHGHf1PWzU
+  - key: WEB_APP_URL
+    scope: RUN_AND_BUILD_TIME
+    value: https://monkfish-app-el9x9.ondigitalocean.app/
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: Sanchi-doc/nodejs_bot
+  http_port: 3000
+  instance_count: 1
+  instance_size_slug: apps-s-1vcpu-0.5gb
+  name: nodejs-bot
+  run_command: |
+    node app.js
+  source_dir: /
